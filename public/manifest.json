@@ -1,8 +1,9 @@
 {
   "manifest_version": 3,
   "name": "Web Copilot",
-  "version": "1.0",
-  "description": "Ask questions and get AI-powered answers based on any webpage content.",
+  "version": "1.0.0",
+  "description": "Your AI web assistant",
+  
   "permissions": ["activeTab", "scripting", "storage"],
   "host_permissions": ["<all_urls>"],
   "content_scripts": [

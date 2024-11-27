@@ -137,7 +137,10 @@ export const WebCopilot: React.FC = () => {
                         }}
                     >
                         <IconButton
-                            onClick={() => setAnswer('')}
+                            onClick={() => {
+                                setAnswer('');      // Clear the answer
+                                setQuestion('');    // Clear the question input
+                            }}
                             sx={{
                                 position: 'absolute',
                                 right: 8,
