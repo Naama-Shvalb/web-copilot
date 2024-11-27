@@ -1,8 +1,29 @@
 import React, { useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import ReactMarkdown from 'react-markdown';
+import { 
+    TextField, 
+    Button, 
+    Paper, 
+    Box, 
+    IconButton,
+    Typography,
+    Alert,
+    ThemeProvider,
+    createTheme
+} from '@mui/material';
+import { Close, Send } from '@mui/icons-material';
 
-const WebCopilot: React.FC = () => {
+// Create a theme (optional - for consistent styling)
+const theme = createTheme({
+    palette: {
+        primary: {
+            main: '#2196f3',
+        },
+    },
+});
+
+export const WebCopilot: React.FC = () => {
     const [question, setQuestion] = useState('');
     const [answer, setAnswer] = useState('');
     const [error, setError] = useState('');
@@ -52,25 +73,84 @@ const WebCopilot: React.FC = () => {
     };
 
     return (
-        <div id="web-copilot" style={{ position: 'fixed', bottom: 0, left: 0, width: '100%', background: '#f0f0f0', borderTop: '1px solid #ccc', zIndex: 10000, padding: '10px' }}>
-            <input type="text" value={question} onChange={(e) => setQuestion(e.target.value)} placeholder="Ask a question..." style={{ width: '80%', padding: '5px' }} />
-            <button onClick={handleAsk} style={{ padding: '5px 10px' }}>Ask</button>
-            {answer && (
-                <div style={{ marginTop: '10px', padding: '10px', background: 'white', borderRadius: '4px', boxShadow: '0 2px 4px rgba(0,0,0,0.1)', position: 'relative' }}>
-                    <button onClick={() => setAnswer('')} style={{ position: 'absolute', right: '10px', top: '10px', background: 'none', border: 'none', fontSize: '20px', cursor: 'pointer', padding: '0 5px' }}>×</button>
-                    <div style={{ paddingRight: '30px' }}>
-                        <ReactMarkdown>{answer}</ReactMarkdown>
-                    </div>
-                </div>
-            )}
-            {error && <div style={{ color: 'red' }}>{error}</div>}
-        </div>
+        <ThemeProvider theme={theme}>
+            <Paper
+                elevation={3}
+                sx={{
+                    position: 'fixed',
+                    bottom: 0,
+                    left: 0,
+                    width: '100%',
+                    zIndex: 10000,
+                    p: 2,
+                    borderRadius: '12px 12px 0 0',
+                }}
+            >
+                <Box sx={{ display: 'flex', gap: 1, alignItems: 'center' }}>
+                    <TextField
+                        fullWidth
+                        variant="outlined"
+                        value={question}
+                        onChange={(e) => setQuestion(e.target.value)}
+                        placeholder="Ask a question..."
+                        size="small"
+                    />
+                    <Button
+                        variant="contained"
+                        onClick={handleAsk}
+                        endIcon={<Send />}
+                    >
+                        Ask
+                    </Button>
+                </Box>
+
+                {answer && (
+                    <Paper 
+                        elevation={1}
+                        sx={{ 
+                            mt: 2, 
+                            p: 2, 
+                            position: 'relative',
+                            maxHeight: '300px',
+                            overflow: 'auto'
+                        }}
+                    >
+                        <IconButton
+                            onClick={() => setAnswer('')}
+                            sx={{
+                                position: 'absolute',
+                                right: 8,
+                                top: 8,
+                            }}
+                            size="small"
+                        >
+                            <Close />
+                        </IconButton>
+                        <Box sx={{ pr: 4 }}>
+                            <ReactMarkdown>{answer}</ReactMarkdown>
+                        </Box>
+                    </Paper>
+                )}
+
+                {error && (
+                    <Alert severity="error" sx={{ mt: 2 }}>
+                        {error}
+                    </Alert>
+                )}
+            </Paper>
+        </ThemeProvider>
     );
 };
 
 // Create and inject the mount point
 const mountPoint = document.createElement('div');
 mountPoint.id = 'web-copilot-root';
+// unset and set initial styles for the mount point
+mountPoint.style.all = 'unset';
+// set ltr direction
+mountPoint.style.direction = 'ltr';
+// set padding to 0 50px
+mountPoint.style.padding = '0 50px';
 document.body.appendChild(mountPoint);
 
 // Create root and render

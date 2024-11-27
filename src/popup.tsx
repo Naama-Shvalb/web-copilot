@@ -1,6 +1,6 @@
 import React from 'react';
 import { createRoot } from 'react-dom/client';
-import { WebCopilot }from './content';
+import PopupComponent from './PopupComponent';
 
 const root = createRoot(document.getElementById('root')!);
-root.render(<WebCopilot />); 
+root.render(<PopupComponent />);

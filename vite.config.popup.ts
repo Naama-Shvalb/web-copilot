@@ -12,17 +12,14 @@ export default defineConfig({
   build: {
     outDir: 'dist',
     sourcemap: true,
+    emptyOutDir: false,  // Add this line to prevent cleaning dist folder
+
     rollupOptions: {
-      input: {
-        content: 'src/content.tsx',
-        popup: 'src/popup.tsx',
-      },
+      input: 'src/popup.tsx',
       output: {
-        entryFileNames: '[name].js',
-        chunkFileNames: '[name].js',
-        assetFileNames: '[name].[ext]',
+        entryFileNames: 'popup.js',
         format: 'iife',
       },
     },
   },
-});
+}); 
