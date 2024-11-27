@@ -3,7 +3,11 @@
   "name": "Web Copilot",
   "version": "1.0.0",
   "description": "Your AI web assistant",
-  
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
   "permissions": ["activeTab", "scripting", "storage"],
   "host_permissions": ["<all_urls>"],
   "content_scripts": [
