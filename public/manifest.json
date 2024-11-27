@@ -3,7 +3,7 @@
   "name": "Web Copilot",
   "version": "1.0",
   "description": "Ask questions and get AI-powered answers based on any webpage content.",
-  "permissions": ["activeTab", "scripting"],
+  "permissions": ["activeTab", "scripting", "storage"],
   "host_permissions": ["<all_urls>"],
   "content_scripts": [
     {
