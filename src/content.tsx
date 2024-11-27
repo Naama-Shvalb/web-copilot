@@ -42,7 +42,7 @@ export const WebCopilot: React.FC = () => {
             return;
         }
 
-        const pageContent = document.body.innerText;
+        const pageContent = document.body.innerText.slice(0, 10000);
         const pageUrl = window.location.href;
         const pageTitle = document.title;
 
@@ -74,16 +74,24 @@ export const WebCopilot: React.FC = () => {
 
     return (
         <ThemeProvider theme={theme}>
-            <Paper
-                elevation={3}
-                sx={{
+            <Paper 
+                elevation={1}
+                sx={{ 
+                    mt: 2, 
+                    p: 2, 
                     position: 'fixed',
-                    bottom: 0,
-                    left: 0,
-                    width: '100%',
-                    zIndex: 10000,
-                    p: 2,
-                    borderRadius: '12px 12px 0 0',
+                    bottom: '20px',
+                    left: '20px',
+                    maxWidth: '800px',
+                    width: '95%',
+                    maxHeight: '80vh',
+                    overflow: 'auto',
+                    zIndex: 9999,
+                    '& pre': {
+                        marginLeft: '16px',
+                        overflowX: 'auto',
+                        width: 'calc(100% - 16px)'
+                    }
                 }}
             >
                 <Box sx={{ display: 'flex', gap: 1, alignItems: 'center' }}>
@@ -94,11 +102,18 @@ export const WebCopilot: React.FC = () => {
                         onChange={(e) => setQuestion(e.target.value)}
                         placeholder="Ask a question..."
                         size="small"
+                        sx={{
+                            maxWidth: '600px',
+                            '& .MuiOutlinedInput-root': {
+                                height: '40px'
+                            }
+                        }}
                     />
                     <Button
                         variant="contained"
                         onClick={handleAsk}
                         endIcon={<Send />}
+                        sx={{ height: '40px' }}
                     >
                         Ask
                     </Button>
@@ -111,8 +126,14 @@ export const WebCopilot: React.FC = () => {
                             mt: 2, 
                             p: 2, 
                             position: 'relative',
-                            maxHeight: '300px',
-                            overflow: 'auto'
+                            maxWidth: '100%',
+                            maxHeight: 'calc(80vh - 80px)',
+                            overflow: 'auto',
+                            '& pre': {
+                                marginLeft: '16px',
+                                overflowX: 'auto',
+                                width: 'calc(100% - 16px)'
+                            }
                         }}
                     >
                         <IconButton
