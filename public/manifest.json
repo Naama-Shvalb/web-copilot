@@ -1,0 +1,19 @@
+{
+  "manifest_version": 3,
+  "name": "Web Copilot",
+  "version": "1.0",
+  "description": "Ask questions and get AI-powered answers based on any webpage content.",
+  "permissions": ["activeTab", "scripting"],
+  "host_permissions": ["<all_urls>"],
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content.js"],
+      "run_at": "document_end"
+    }
+  ],
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "Web Copilot"
+  }
+}

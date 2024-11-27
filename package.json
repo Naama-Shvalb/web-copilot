@@ -1,0 +1,21 @@
+{
+  "name": "web-copilot",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "vite build",
+    "dev": "vite"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "@vitejs/plugin-react": "^4.3.4",
+    "ts-loader": "^9.5.1",
+    "typescript": "^5.7.2",
+    "vite": "^6.0.1",
+    "webextension-polyfill": "^0.12.0"
+  }
+}
