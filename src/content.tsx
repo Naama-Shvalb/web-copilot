@@ -56,7 +56,7 @@ export const WebCopilot: React.FC = () => {
                 body: JSON.stringify({
                     model: 'gpt-4o',
                     messages: [{ role: 'system', content: 'Analyze webpage content and answer questions.' },
-                        { role: 'user', content: `Page Content: ${pageContent}\nQuestion: ${question}` }]
+                        { role: 'user', content: `Page URL: ${pageUrl}\nPage Title: ${pageTitle}\nPage Content: \n${pageContent}\nBased on this content and your general knowledge, please answer the following question: \nQuestion: ${question}` }]
                 })
             });
 
