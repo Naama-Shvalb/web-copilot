@@ -5,11 +5,11 @@ import '@fontsource/roboto/700.css';
 import React, { useState, useRef, useEffect } from 'react';
 import { createRoot } from 'react-dom/client';
 import ReactMarkdown from 'react-markdown';
-import {
-    TextField,
-    Button,
-    Paper,
-    Box,
+import { 
+    TextField, 
+    Button, 
+    Paper, 
+    Box, 
     IconButton,
     Typography,
     Alert,
@@ -18,15 +18,8 @@ import {
     CircularProgress
 } from '@mui/material';
 import { Close, Send, Minimize, OpenInFull, ChatBubble } from '@mui/icons-material';
-import { CacheProvider } from '@emotion/react';
-import createCache from '@emotion/cache';
-
 
 const theme = createTheme({
-    typography: {
-        fontSize: 16,
-    },
-
     palette: {
         primary: {
             main: '#2196f3',
@@ -57,16 +50,19 @@ export const WebCopilot: React.FC = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [dragStartTime, setDragStartTime] = useState<number>(0);
 
+    // Load API key when component mounts
     React.useEffect(() => {
         chrome.storage.sync.get(['openaiApiKey'], (result) => {
             setApiKey(result.openaiApiKey || '');
         });
     }, []);
 
+    // Add effect to save minimized state
     useEffect(() => {
         localStorage.setItem('webCopilotMinimized', JSON.stringify(isMinimized));
     }, [isMinimized]);
 
+    // Add effect to save position
     useEffect(() => {
         localStorage.setItem('webCopilotPosition', JSON.stringify(position));
     }, [position]);
@@ -99,9 +95,9 @@ export const WebCopilot: React.FC = () => {
                     model: 'gpt-4',
                     messages: [
                         { role: 'system', content: 'Analyze webpage content and answer questions.' },
-                        {
-                            role: 'user',
-                            content: `Page URL: ${pageUrl}\nPage Title: ${pageTitle}\nPage Content: \n${pageContent}\nBased on this content and your general knowledge, please answer the following question: \nQuestion: ${question}`
+                        { 
+                            role: 'user', 
+                            content: `Page URL: ${pageUrl}\nPage Title: ${pageTitle}\nPage Content: \n${pageContent}\nBased on this content and your general knowledge, please answer the following question: \nQuestion: ${question}` 
                         }
                     ]
                 })
@@ -146,13 +142,13 @@ export const WebCopilot: React.FC = () => {
 
     return (
         <ThemeProvider theme={theme}>
-            <Paper
+            <Paper 
                 elevation={2}
                 onMouseDown={handleMouseDown}
                 onMouseMove={handleMouseMove}
                 onMouseUp={handleMouseUp}
                 onMouseLeave={handleMouseUp}
-                sx={{
+                sx={{ 
                     position: 'fixed',
                     top: 0,
                     left: 0,
@@ -170,8 +166,6 @@ export const WebCopilot: React.FC = () => {
                     flexDirection: 'column',
                     padding: isMinimized ? '0' : '16px',
                     borderRadius: isMinimized ? '20px' : '8px',
-                    fontSize: '16px',
-
                 }}
             >
                 {isMinimized ? (
@@ -188,7 +182,7 @@ export const WebCopilot: React.FC = () => {
                             }
                         }}
                     >
-                        <ChatBubble sx={{
+                        <ChatBubble sx={{ 
                             color: 'primary.main',
                             width: '28px',
                             height: '28px',
@@ -201,8 +195,8 @@ export const WebCopilot: React.FC = () => {
                     </Box>
                 ) : (
                     <>
-                        <Box sx={{
-                            display: 'flex',
+                        <Box sx={{ 
+                            display: 'flex', 
                             flexDirection: 'column',
                             position: 'relative',
                             width: '100%'
@@ -210,11 +204,11 @@ export const WebCopilot: React.FC = () => {
                             <IconButton
                                 onClick={() => setIsMinimized(true)}
                                 size="small"
-                                sx={{
+                                sx={{ 
                                     position: 'absolute',
                                     right: 0,
                                     top: 0,
-                                    height: '40px',
+                                    height: '40px', 
                                     width: '40px',
                                     display: 'flex',
                                     alignItems: 'center',
@@ -222,14 +216,14 @@ export const WebCopilot: React.FC = () => {
                                     zIndex: 1
                                 }}
                             >
-                                <Minimize sx={{
+                                <Minimize sx={{ 
                                     transform: 'translateY(1px)'
                                 }} />
                             </IconButton>
 
-                            <Box sx={{
-                                display: 'flex',
-                                gap: 1,
+                            <Box sx={{ 
+                                display: 'flex', 
+                                gap: 1, 
                                 alignItems: 'center',
                                 justifyContent: 'center',
                                 mb: answer ? 2 : 0,
@@ -257,7 +251,7 @@ export const WebCopilot: React.FC = () => {
                                 <IconButton
                                     onClick={handleAsk}
                                     color="primary"
-                                    sx={{
+                                    sx={{ 
                                         height: '40px',
                                         width: '40px',
                                         backgroundColor: 'primary.main',
@@ -287,11 +281,11 @@ export const WebCopilot: React.FC = () => {
                             )}
 
                             {answer && !isLoading && (
-                                <Paper
+                                <Paper 
                                     elevation={0}
-                                    sx={{
-                                        mt: 2,
-                                        p: 2,
+                                    sx={{ 
+                                        mt: 2, 
+                                        p: 2, 
                                         position: 'relative',
                                         maxWidth: '100%',
                                         maxHeight: 'calc(80vh - 120px)',
@@ -321,11 +315,11 @@ export const WebCopilot: React.FC = () => {
                                     >
                                         <Close fontSize="small" />
                                     </IconButton>
-                                    <Box sx={{
+                                    <Box sx={{ 
                                         pr: 4,
                                         mt: 1
                                     }}
-                                         dir={getTextDirection(answer)}
+                                    dir={getTextDirection(answer)}
                                     >
                                         <ReactMarkdown>{answer}</ReactMarkdown>
                                     </Box>
@@ -344,83 +338,11 @@ export const WebCopilot: React.FC = () => {
         </ThemeProvider>
     );
 };
+
 const mountPoint = document.createElement('div');
 mountPoint.id = 'web-copilot-root';
-
-const shadowRoot = mountPoint.attachShadow({ mode: 'open' });
 document.body.appendChild(mountPoint);
 
-const styleElement = document.createElement('style');
-styleElement.textContent = `
-    *, *::before, *::after {
-        margin: 0 ;
-        padding: 4 ;
-        box-sizing: border-box ;
-    }
+const root = createRoot(mountPoint);
+root.render(<WebCopilot />);
 
-    :host {
-        all: initial
-        font-size: 16px;
-        font-family: 'Roboto', Arial, sans-serif ;
-        line-height: 1.5 ;
-        color: #333 ;
-        background-color: white ;
-        display: block ;
-    }
-
-    html, body {
-        font-size: 16px;
-    }
-
-    input {
-        all: unset;
-        font-size: 16px !important;
-        font-family: 'Roboto', Arial, sans-serif;
-        line-height: 1.5;
-        padding: 8px;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-        background-color: white;
-        color: #333;
-        width: 100%;
-        box-sizing: border-box ;
-    }
-
-    input:focus {
-        outline: none;
-        border-color: #2196f3;
-        box-shadow: 0 0 2px rgba(33, 150, 243, 0.5);
-    }
-
-    #web-copilot-root {
-        position: fixed;
-        top: 10px;
-        left: 10px;
-        width: 400px;
-        max-width: 400px;
-        padding: 16px;
-        border: 1px solid #ccc;
-        border-radius: 8px;
-        background-color: white;
-        z-index: 99999;
-        overflow: hidden;
-    }
-`;
-shadowRoot.appendChild(styleElement);
-
-const emotionCache = createCache({
-    key: 'web-copilot',
-    container: shadowRoot,
-});
-
-const rootContainer = document.createElement('div');
-shadowRoot.appendChild(rootContainer);
-
-const root = createRoot(rootContainer);
-root.render(
-    <CacheProvider value={emotionCache}>
-        <ThemeProvider theme={theme}>
-            <WebCopilot />
-        </ThemeProvider>
-    </CacheProvider>
-);
