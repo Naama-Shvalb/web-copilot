@@ -96,17 +96,51 @@ export const WebCopilot: React.FC = () => {
                     'Authorization': `Bearer ${apiKey}`
                 },
                 body: JSON.stringify({
-                    model: 'gpt-4',
+                    model: 'gpt-4o-mini',
                     messages: [
-                        { role: 'system', content: 'Analyze webpage content and answer questions.' },
+                        {
+                            role: 'system',
+                            content: `### Instructions 
+1. **Understand Context**:
+    - Use the provided 'Page URL', 'Page Title', and 'Page Content' to determine the context and purpose of the page.
+    - Analyze the page content to identify its main features, functionality, or relevant sections.
+
+2. **Tailor the Answer**:
+    - Generate responses specifically aligned with the context of the page.
+    - Avoid generic answers and directly reference details from the provided page content.
+
+3. **Handle User Intent**:
+    - Infer user intent based on the question and page context.
+    - If the question is vague, guide the response using the most relevant page sections.
+
+4. **Be Concise and Actionable**:
+    - Provide clear, step-by-step instructions or actionable advice if the user's query requires guidance.
+    - Summarize relevant parts of the page before answering, if necessary.
+
+5. **Acknowledge Limitations**:
+    - If information on the page is insufficient, explicitly state this and suggest further steps or additional context required.
+
+6. **Example Response Formats**:
+    - **For How-To Questions**: "Based on the settings page you are viewing, follow these steps: ..."
+    - **For Explanations**: "This page allows you to configure [feature]. According to the content, you can achieve this by..."
+    - **For Suggestions**: "From the context of this page, it seems you are trying to [goal]. Here's how you might proceed..."
+
+7. **Avoid Irrelevance**:
+    - Do not include information unrelated to the current webpage content.
+    - Mention explicitly if the page content lacks necessary details for answering the question.
+
+8. **Adapt for Dynamic Pages**:
+    - If the content indicates dynamic interactions (e.g., forms, buttons, or dynamic elements), guide the user on static content and suggest interactive exploration where needed.`
+                        },
                         {
                             role: 'user',
-                            content: `Page URL: ${pageUrl}\nPage Title: ${pageTitle}\nPage Content: \n${pageContent}\nBased on this content and your general knowledge, please answer the following question: \nQuestion: ${question}`
+                            content: `Page URL: ${pageUrl}\nPage Title: ${pageTitle}\nPage Content: \n''' \n ${pageContent}\n ''' \n  Please answer the following question in the same language as the question. If the question is in Hebrew, respond in Hebrew: \nQuestion: ${question}`
                         }
-                    ]
+                    ],
+                    temperature: 0
                 })
             });
-
+                                    
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
@@ -384,12 +418,15 @@ styleElement.textContent = `
         color: #333;
         width: 100%;
         box-sizing: border-box ;
+        position: relative;
+        transition: transform 0.2s;
     }
 
     input:focus {
         outline: none;
         border-color: #2196f3;
         box-shadow: 0 0 2px rgba(33, 150, 243, 0.5);
+        transform: translateY(0);
     }
 
     #web-copilot-root {
@@ -403,7 +440,8 @@ styleElement.textContent = `
         border-radius: 8px;
         background-color: white;
         z-index: 99999;
-        overflow: hidden;
+        overflow: auto;
+        scroll-behavior: smooth;
     }
 `;
 shadowRoot.appendChild(styleElement);
