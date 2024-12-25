@@ -14,7 +14,7 @@ This is the first beta version of Web Copilot. It includes core functionality fo
 
 1. **Download the release**:
    Download the packaged version of the extension from the latest release:
-   - [Download Web Copilot v0.1.0-beta](https://github.com/Naama-Shvalb/web-copilot/releases/download/v0.1.0-beta/web-copilot-v0.1.0-beta.zip)
+   - [Download Web Copilot v0.1.0-beta](https://github.com/user-attachments/files/18246730/dist.zip)
 
 2. **Install the extension**:
    - Extract the `.zip` file to a folder.
