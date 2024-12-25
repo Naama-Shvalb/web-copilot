@@ -28,7 +28,10 @@ This is the first beta version of Web Copilot. It includes core functionality fo
 We welcome contributions to the project! If you find bugs or have suggestions for improvements, feel free to open an issue or submit a pull request.
 
 ## License
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+This project is licensed under the [Creative Commons Attribution-NonCommercial 4.0 International License (CC BY-NC 4.0)](https://creativecommons.org/licenses/by-nc/4.0/).
+
+You may not use the material for commercial purposes.
 
 ## Feedback
 If you have any feedback or questions, please feel free to reach out via [GitHub Issues](https://github.com/Naama-Shvalb/web-copilot/issues).
