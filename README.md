@@ -24,6 +24,7 @@ This is the first beta version of Web Copilot. It includes core functionality fo
    - In Chrome, go to `chrome://extensions/`.
    - Enable "Developer mode" at the top-right.
    - Click "Load unpacked" and select the folder where you extracted the extension.
+   - Enter your API key.
 
 3. **Enjoy your Web Copilot**: Once installed, you’ll see the Web Copilot icon in your browser’s toolbar. Click it to start using the AI-powered assistant.
 
