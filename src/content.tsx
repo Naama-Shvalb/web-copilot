@@ -17,7 +17,7 @@ import {
     createTheme,
     CircularProgress
 } from '@mui/material';
-import { Close, Send, Minimize, OpenInFull, ChatBubble } from '@mui/icons-material';
+import { Close, Send, Minimize, OpenInFull, ChatBubble, CopyAll } from '@mui/icons-material';
 import { CacheProvider } from '@emotion/react';
 import createCache from '@emotion/cache';
 
@@ -56,6 +56,9 @@ export const WebCopilot: React.FC = () => {
     const dragRef = useRef<{ x: number; y: number } | null>(null);
     const [isLoading, setIsLoading] = useState(false);
     const [dragStartTime, setDragStartTime] = useState<number>(0);
+    const [isTextBoxHovered, setIsTextBoxHovered] = useState(false);
+    const [copyMessage, setCopyMessage] = useState('');
+    const [isResponseVisible, setIsResponseVisible] = useState(true);
 
     React.useEffect(() => {
         chrome.storage.sync.get(['openaiApiKey'], (result) => {
@@ -178,6 +181,24 @@ export const WebCopilot: React.FC = () => {
         dragRef.current = null;
     };
 
+    const handleTextBoxMouseDown = (e: React.MouseEvent) => {
+        e.stopPropagation();
+    };
+
+    const handleResponseMouseDown = (e: React.MouseEvent) => {
+        e.stopPropagation();
+    };
+
+    const handleCopyResponse = () => {
+        navigator.clipboard.writeText(answer).then(() => {
+            setCopyMessage('Response copied to clipboard!');
+            setTimeout(() => setCopyMessage(''), 3000);
+        }).catch(err => {
+            console.error('Failed to copy: ', err);
+            setError('Failed to copy response.');
+        });
+    };
+
     return (
         <ThemeProvider theme={theme}>
             <Paper
@@ -195,7 +216,7 @@ export const WebCopilot: React.FC = () => {
                     width: isMinimized ? '40px' : '95%',
                     height: isMinimized ? '40px' : 'auto',
                     maxHeight: isMinimized ? '40px' : '80vh',
-                    overflow: 'hidden',
+                    overflow: isTextBoxHovered ? 'hidden' : 'auto',
                     zIndex: 99999,
                     cursor: isDragging ? 'grabbing' : 'grab',
                     transition: 'width 0.2s ease, height 0.2s ease',
@@ -205,7 +226,6 @@ export const WebCopilot: React.FC = () => {
                     padding: isMinimized ? '0' : '16px',
                     borderRadius: isMinimized ? '20px' : '8px',
                     fontSize: '16px',
-
                 }}
             >
                 {isMinimized ? (
@@ -277,6 +297,9 @@ export const WebCopilot: React.FC = () => {
                                     placeholder="Ask a question..."
                                     size="small"
                                     dir={getTextDirection(question)}
+                                    onMouseEnter={() => setIsTextBoxHovered(true)}
+                                    onMouseLeave={() => setIsTextBoxHovered(false)}
+                                    onMouseDown={handleTextBoxMouseDown}
                                     sx={{
                                         maxWidth: '600px',
                                         '& .MuiOutlinedInput-root': {
@@ -320,7 +343,7 @@ export const WebCopilot: React.FC = () => {
                                 </Box>
                             )}
 
-                            {answer && !isLoading && (
+                            {answer && !isLoading && isResponseVisible && (
                                 <Paper
                                     elevation={0}
                                     sx={{
@@ -338,15 +361,16 @@ export const WebCopilot: React.FC = () => {
                                             width: 'calc(100% - 16px)'
                                         }
                                     }}
+                                    onMouseDown={handleResponseMouseDown}
                                 >
                                     <IconButton
-                                        onClick={() => setAnswer('')}
+                                        onClick={() => setIsResponseVisible(false)}
                                         size="small"
                                         sx={{
                                             position: 'absolute',
-                                            right: 8,
+                                            right: 32,
                                             top: 8,
-                                            padding: '4px',
+                                            padding: '2px',
                                             backgroundColor: 'rgba(255, 255, 255, 0.8)',
                                             '&:hover': {
                                                 backgroundColor: 'rgba(255, 255, 255, 0.9)'
@@ -354,6 +378,22 @@ export const WebCopilot: React.FC = () => {
                                         }}
                                     >
                                         <Close fontSize="small" />
+                                    </IconButton>
+                                    <IconButton
+                                        onClick={handleCopyResponse}
+                                        size="small"
+                                        sx={{
+                                            position: 'absolute',
+                                            right: 8,
+                                            top: 8,
+                                            padding: '2px',
+                                            backgroundColor: 'rgba(255, 255, 255, 0.8)',
+                                            '&:hover': {
+                                                backgroundColor: 'rgba(255, 255, 255, 0.9)'
+                                            }
+                                        }}
+                                    >
+                                        <CopyAll fontSize="small" />
                                     </IconButton>
                                     <Box sx={{
                                         pr: 4,
@@ -364,6 +404,12 @@ export const WebCopilot: React.FC = () => {
                                         <ReactMarkdown>{answer}</ReactMarkdown>
                                     </Box>
                                 </Paper>
+                            )}
+
+                            {copyMessage && (
+                                <Alert severity="info" sx={{ mt: 2 }}>
+                                    {copyMessage}
+                                </Alert>
                             )}
 
                             {error && (
